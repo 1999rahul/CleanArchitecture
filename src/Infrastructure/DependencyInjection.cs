@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Models;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Data.Interceptors;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -48,6 +50,12 @@ public static class DependencyInjection
 
         services.AddAuthorization(options =>
             options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+
+        services.Configure<SchoolDatabaseSettings>(
+                        configuration.GetSection(nameof(SchoolDatabaseSettings)));
+
+        services.AddSingleton<ISchoolDatabaseSettings>(provider =>
+             provider.GetRequiredService<IOptions<SchoolDatabaseSettings>>().Value);
 
         return services;
     }

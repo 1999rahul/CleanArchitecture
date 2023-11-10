@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace CleanArchitecture.Domain.Entities;
 public class Student
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = string.Empty;
     public int Age { get; set; } = 0;
     public int roll {  get; set; }

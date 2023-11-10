@@ -16,7 +16,7 @@ public class Students : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-           .RequireAuthorization()
+       
            .MapGet(GetAllStudents)
            .MapPost(CreateStudent)
            .MapPut(UpdateStudent, "{id}")
@@ -28,19 +28,19 @@ public class Students : EndpointGroupBase
         return await sender.Send(new GetAllStudentsQuery());
     }
 
-    public async Task<int> CreateStudent(ISender sender, CreateStudentCommand command)
+    public async Task<string> CreateStudent(ISender sender, CreateStudentCommand command)
     {
         return await sender.Send(command);
     }
 
-    public async Task<IResult> UpdateStudent(ISender sender, int id, UpdateStudentCommand command)
+    public async Task<IResult> UpdateStudent(ISender sender, string id, UpdateStudentCommand command)
     {
         if (id != command.Id) return Results.BadRequest();
         await sender.Send(command);
         return Results.NoContent();
     }
 
-    public async Task<IResult> DeleteStudent(ISender sender, int id)
+    public async Task<IResult> DeleteStudent(ISender sender, string id)
     {
         await sender.Send(new DeleteStudentCommand(id));
         return Results.NoContent();
